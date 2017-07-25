@@ -15,6 +15,7 @@ using WMPLib;
 //==================================================================================================================================
 //history:
 //	2017.07.24: version 1.0.0.1 - initial version
+//	2017.07.25: version 1.0.0.2 - files are deleted only after the aplication is close, fixed
 
 
 namespace NotThisSong
@@ -33,6 +34,8 @@ namespace NotThisSong
 		private void btnNext_Click(object sender, EventArgs e)
 		{
 			wplayer.controls.stop();
+			wplayer = null;
+			wplayer = new WMPLib.WindowsMediaPlayer();
 			Random rnd = new Random();
 			string[] fs = Directory.GetFiles(@txtFolder.Text);
 			curMp3Name = fs[rnd.Next(fs.Length)];
@@ -49,6 +52,8 @@ namespace NotThisSong
 				return;
 			}
 			wplayer.controls.stop();
+			wplayer.close();
+			wplayer = null;
 			File.Delete(curMp3Name);
 			lblStatus.Text = curMp3Name + " is deleted";
 			curMp3Name = "";
